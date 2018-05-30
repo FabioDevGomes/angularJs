@@ -39,7 +39,7 @@
 				{nome: "Oi", codigo: 14, categoria: "Celular"},
 				{nome: "Vivo", codigo: 15, categoria: "Celular"},
 				{nome: "Tim", codigo: 41, categoria: "Celular"},
-				{nome: "GVT", codigo: 25, categoria: "Fixo"},
+				{nome: "Vivo Fixo", codigo: 25, categoria: "Fixo"},
 				{nome: "Embratel", codigo: 21, categoria: "Fixo"}
 			];
 			$scope.adicionarContato = function(contato){
@@ -81,8 +81,7 @@
 			</tr>
 		</table>
 		<hr>
-		é válido: {{contatoForm.$valid}}<br/>
-		é inválido: {{contatoForm.$invalid}}
+
 		<form name="contatoForm">
 			<input class="form-control" type="text" placeholder="nome" name="nome" ng-model="contato.nome" ng-required="true" ng-minlength="5">
 			<input class="form-control" type="text" placeholder="telefone" name="telefone" ng-model="contato.telefone" ng-required="true" ng-pattern="/^\d{4,5}-\d{4}$/">
