@@ -39,11 +39,7 @@
 			];
 
 			var carregarContatos = function(){
-				console.log("carregarContatos contatos");
-				/*$http.get("http://localhost:8080/rest-angularjs/rest/contatos/array").success(function(data, status){
-					console.lgo(data);
-				});*/
-
+				console.log("carregar contatos");
 				$http({method: 'GET', url: 'http://localhost:8080/rest-angularjs/rest/contatos/array'}).then(function (response){
 					 //console.log(response.data);
 					 $scope.contatos = response.data;
@@ -65,20 +61,20 @@
 
 			$scope.salvarContatos = function(contato){
 				console.log("salvar contatos");
-				//$http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-				//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+				contato.data = new Date();
 				$http({
 					method: 'POST', 
-					url: 'http://localhost:8080/rest-angularjs/rest/contatos/post', 	
-					dataType: 'json', 
-					data: contato,
-					headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+					url: 'http://localhost:8080/rest-angularjs/rest/contatos/post', 
+					data: contato
 				}).then(function (response){
-					 console.log("resposta");
-					 carregarContatos();
+					console.log("resposta");
+					carregarContatos();
+					delete $scope.contato;
+					$scope.contatoForm.$setPristine();
 				},function (error){
 					console.log(error);
 				});
+
 			}
 
 			$scope.operadoras = [
@@ -88,11 +84,6 @@
 				{nome: "Vivi Fixo", codigo: 25, categoria: "Fixo", preco: 3},
 				{nome: "Embratel", codigo: 21, categoria: "Fixo", preco: 1}
 			];
-			$scope.adicionarContato = function(contato){
-				$scope.contatos.push(contato);
-				delete $scope.contato;
-				$scope.contatoForm.$setPristine();
-			}
 			$scope.apagarContatos = function(contatos){
 				$scope.contatos = contatos.filter(function(contato){
 					if(!contato.selecionado == true)
