@@ -39,6 +39,7 @@
 			];
 
 			var carregarContatos = function(){
+				console.log("carregarContatos contatos");
 				/*$http.get("http://localhost:8080/rest-angularjs/rest/contatos/array").success(function(data, status){
 					console.lgo(data);
 				});*/
@@ -52,15 +53,33 @@
 			}
 
 			var carregarOperadoras = function(){
-				console.log("serv");
-				$http({method: 'GET', url: 'http://localhost:8080/rest-angularjs/rest/operadoras'}).then(function (response){
-					 console.log(response.data);
+				$http({
+					method: 'GET', 
+					url: 'http://localhost:8080/rest-angularjs/rest/operadoras'
+				}).then(function (response){
 					 $scope.operadoras = response.data;
 				},function (error){
 					console.log(error);
 				});
 			}
 
+			$scope.salvarContatos = function(contato){
+				console.log("salvar contatos");
+				//$http.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+				//$http.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded";
+				$http({
+					method: 'POST', 
+					url: 'http://localhost:8080/rest-angularjs/rest/contatos/post', 	
+					dataType: 'json', 
+					data: contato,
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+				}).then(function (response){
+					 console.log("resposta");
+					 carregarContatos();
+				},function (error){
+					console.log(error);
+				});
+			}
 
 			$scope.operadoras = [
 				{nome: "Oi", codigo: 14, categoria: "Celular", preco: 2},
@@ -139,10 +158,9 @@
 		<div ng-show="contatoForm.telefone.$error.pattern" class="alert alert-danger">
 			Por favor, preencha o telefone no formato 9999-9999!
 		</div>
-		<button class="btn btn-primary btn-block" ng-click="adicionarContato(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
+		<button class="btn btn-primary btn-block" ng-click="salvarContatos(contato)" ng-disabled="contatoForm.$invalid">Adicionar Contato</button>
 		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-disabled="!isContatotSelecionado(contatos)" >Apagar Contatos</button>
 		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos)" ng-show="isContatotSelecionado(contatos)" >Apagar Contatos</button>
-		{{100 | number:2}}
 	</div>
 	<div style="text-align: center;">
 		Criado por Fábio Alves
