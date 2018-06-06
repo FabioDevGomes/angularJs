@@ -1,113 +1,19 @@
-<html ng-app="listTelefonica">
+<html ng-app="listaTelefonica">
 <head>
 	<meta charset="utf-8">
 	<title>Lista Telefonica</title>
 	<link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
-	<style type="text/css">
-		.jumbotron{
-			width: 700px;
-			text-align: center;
-			margin-left: auto;
-			margin-right: auto;
-			margin-top: 20px;
-			padding-top: 2px;
-		}
-		.table{
-			margin-top: 20px;
-		}
-		.form-control{
-			margin-bottom: 5px;;
-		}
-		.selecionado{
-			background: yellow;
-		}
-		.negrito{
-			font-weight: bold;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
 	<script src="lib/angular-1.6.10/angular.js"></script>
 	<script src="lib/angular-1.6.10/i18n/angular-locale_pt-br.js"></script>
 	<script src="lib/angular-messages/angular-messages.js"></script>
-	<script type="text/javascript">
-		angular.module("listTelefonica", ["ngMessages"]);
-		angular.module("listTelefonica").controller("listTelefonicaCtrl", function($scope, $filter, $http){
-			$scope.app = "Lista Telefonica";
-			$scope.contatos = [
-				{nome: $filter('uppercase')("Fábio"), telefone: "8999-2222", data: new Date(), cor: "yellow", operadora: {nome: "Vivo", codigo: 15, categoria: "Celular"}},
-				{nome: "Sthefany", telefone: "7999-2222", data: new Date(), cor: "red", operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}},
-				{nome: "Mary Jane Elita", telefone: "9999-2222", data: new Date(), cor: "blue", operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}}
-			];
-
-			var carregarContatos = function(){
-				console.log("carregar contatos");
-				$http({method: 'GET', url: 'http://localhost:8080/rest-angularjs/rest/contatos/array'}).then(function (response){
-					 //console.log(response.data);
-					 $scope.contatos = response.data;
-				},function (error){
-					console.log(error);
-				});
-			}
-
-			var carregarOperadoras = function(){
-				$http({
-					method: 'GET', 
-					url: 'http://localhost:8080/rest-angularjs/rest/operadoras'
-				}).then(function (response){
-					 $scope.operadoras = response.data;
-				},function (error){
-					console.log(error);
-				});
-			}
-
-			$scope.salvarContatos = function(contato){
-				console.log("salvar contatos");
-				contato.data = new Date();
-				$http({
-					method: 'POST', 
-					url: 'http://localhost:8080/rest-angularjs/rest/contatos/post', 
-					data: contato
-				}).then(function (response){
-					console.log("resposta");
-					carregarContatos();
-					delete $scope.contato;
-					$scope.contatoForm.$setPristine();
-				},function (error){
-					console.log(error);
-				});
-
-			}
-
-			$scope.operadoras = [
-				{nome: "Oi", codigo: 14, categoria: "Celular", preco: 2},
-				{nome: "Vivo", codigo: 15, categoria: "Celular", preco: 3},
-				{nome: "Tim", codigo: 41, categoria: "Celular", preco: 1},
-				{nome: "Vivi Fixo", codigo: 25, categoria: "Fixo", preco: 3},
-				{nome: "Embratel", codigo: 21, categoria: "Fixo", preco: 1}
-			];
-			$scope.apagarContatos = function(contatos){
-				$scope.contatos = contatos.filter(function(contato){
-					if(!contato.selecionado == true)
-						return contato;
-				});
-			}
-			$scope.isContatotSelecionado = function(contatos){
-				return contatos.some(function(contato){
-					return contato.selecionado;
-				});
-			}
-			$scope.ordenarPor = function(campo){
-				$scope.criterioDeOrdenacao = campo;
-				$scope.direcaoOrdenacao = !$scope.direcaoOrdenacao;
-			}
-			carregarContatos();
-			carregarOperadoras();
-		});
-	</script>
+	<script src="js/app.js"></script>
+	<script src="js/controllers/listaTelefonicaCtrl.js"></script>
 </head>
-<body ng-controller="listTelefonicaCtrl">
+<body ng-controller="listaTelefonicaCtrl">
 	<div class="jumbotron">
 		<h3>{{app}}</h3>
-		<input type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
+		<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
 		<table class="table" ng-show="contatos.length > 0">
 			<tr>
 				<th></th>
@@ -157,7 +63,7 @@
 		Criado por Fábio Alves
 	</div>
 	<!-- Não funciona no crome
-	<div ng-include="'footer02.html'"></div>
+	<div ng-include="'view/footer02.html'"></div>
 	-->
 </body>
 </html>
